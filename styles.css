@@ -1,0 +1,271 @@
+/* -*-CSS-*- */
+
+ol.checkskill {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+ol.checkskill li {
+    list-style-type: none;
+}
+
+ol.checkskill .useritem {
+    font-style: italic;
+    color: #404090;
+}
+
+ol.checkskill .note {
+    font-style: italic;
+    color: #a0a0e0;
+    padding: 0 0 0 20px;
+}
+
+ol.checkskill .itemoptional {
+    font-style: italic;
+}
+
+ol.checkskill .itemheading {
+    font-weight: bold;
+}
+
+ol.checkskill .itemblack {
+    color: #000000;
+}
+
+ol.checkskill .itemblack.itemoptional {
+    color: #a0a0a0;
+}
+
+ol.checkskill .itemred {
+    color: #ff0000;
+}
+
+ol.checkskill .itemred.itemoptional {
+    color: #ffa0a0;
+}
+
+ol.checkskill .itemorange {
+    color: #ffba00;
+}
+
+ol.checkskill .itemorange.itemoptional {
+    color: #ffdaa0;
+}
+
+ol.checkskill .itemgreen {
+    color: #00ff00;
+}
+
+ol.checkskill .itemgreen.itemoptional {
+    color: #a0ffa0;
+}
+
+ol.checkskill .itempurple {
+    color: #d000ff;
+}
+
+ol.checkskill .itempurple.itemoptional {
+    color: #d0a0ff;
+}
+
+ol.checkskill .teachercomment {
+    color: black;
+    background-color: #ffffb0;
+    border: solid black 1px;
+    margin: 0 0 0 20px;
+}
+
+ol.checkskill .itemauto.itemdisabled {
+    text-decoration: line-through;
+    background-color: #bcc4c4;
+}
+
+ol.checkskill .itemauto {
+    background-color: #d6e6e7;
+}
+
+ol.checkskill li .itemuserdate {
+    background-color: #b0ffb0;
+    position: absolute;
+    width: 10em;
+    left: 75%;
+    z-index: 100;
+}
+
+ol.checkskill li .itemteacherdate {
+    background-color: #b0ffb0;
+    position: absolute;
+    width: 10em;
+    left: 60%;
+    z-index: 100;
+}
+
+ol.checkskill li .itemteachername {
+    background-color: #b0ffb0;
+    position: absolute;
+    width: 10em;
+    left: 45%;
+    z-index: 100;
+}
+
+.checkskill-itemdue {
+    font-style: italic;
+    color: #90d090;
+}
+
+.checkskill-itemoverdue {
+    font-style: italic;
+    color: #f09090;
+}
+
+.checkskillreport .header {
+    background-color: #e1e1df;
+}
+
+.checkskillreport .head0 {
+    font-weight: bold;
+}
+
+.checkskillreport .head1 {
+    font-weight: normal;
+}
+
+.checkskillreport .head2 {
+    font-weight: normal;
+    font-style: italic;
+}
+
+.checkskillreport .cell.reportheading {
+    background-color: black;
+}
+
+.checkskillreport .cell.level0 {
+    background-color: #e7e7e7;
+}
+
+.checkskillreport .cell.level1 {
+    background-color: #c7c7c7;
+}
+
+.checkskillreport .cell.level2 {
+    background-color: #afafaf;
+}
+
+.checkskillreport .cell.level0-checked {
+    background-color: #00ff00;
+}
+
+.checkskillreport .cell.level1-checked {
+    background-color: #00df00;
+}
+
+.checkskillreport .cell.level2-checked {
+    background-color: #00bf00;
+}
+
+.checkskillreport .cell.level0-unchecked {
+    background-color: #ff0000;
+}
+
+.checkskillreport .cell.level1-unchecked {
+    background-color: #df0000;
+}
+
+.checkskillreport .cell.level2-unchecked {
+    background-color: #bf0000;
+}
+
+.checkskill_progress_outer {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    width: 300px;
+    background-color: transparent;
+    height: 15px;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 2px 2px 3px #ccc;
+    border-radius: 5px;
+}
+
+.checkskill_progress_inner {
+    background-color: #229b15;
+    height: 100%;
+    width: 100%;
+    background-repeat: repeat-x;
+    background-position: top;
+    z-index: 10;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 0 4px #229b15;
+    border-radius: 2px;
+}
+
+.checkskill_progress_anim {
+    background-color: #98c193;
+    height: 15px;
+    width: 0;
+    background-repeat: repeat-x;
+    background-position: top;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    display: block;
+    box-shadow: 0 0 4px #98c193;
+    border-radius: 2px;
+}
+
+.checkskillimportexport {
+    text-align: right;
+    width: 90%;
+}
+
+p.checkskillwarning {
+    margin-top: 1em;
+    color: #800000;
+    font-weight: bold;
+}
+
+.checkskill_progress_percent {
+    padding-left: 0.5em;
+}
+
+.jsenabled #checkskillsavechecks {
+    display: none;
+}
+
+#checkskillspinner {
+    display: none;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 16px;
+    height: 16px;
+    background-image: url([[pix:i/loading_small]]);
+}
+
+.checkskillbox {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+ol.checkskill label {
+    display: inline;
+}
+
+/* MODIF JF 2012/03/18 */
+.usercomment {
+    color: black;
+    background-color: #c0ffc0;
+    border: solid black 1px;
+    margin: 0 0 0 20px;
+}
+
+span.small {
+	font-size : 80%;
+}

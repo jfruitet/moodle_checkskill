@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+
+ <g>
+  <title>Layer 1</title>
+  <rect id="svg_1" height="79.77778" width="481.44445" y="72.28891" x="50.18335" stroke-width="5" stroke="#000000" fill="#ffffff"/>
+  <rect id="svg_7" stroke-opacity="0" height="73" width="255.000003" y="76.00388" x="54.278075" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="5" stroke="#000000" fill="#00ff00"/>
+  <line id="svg_16" y2="156.06668" x2="527.35534" y1="156.06668" x1="48.46644" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="8" stroke="#7f7f7f" fill="none"/>
+  <line id="svg_25" y2="315.76297" x2="114.7852" y1="262.42963" x1="63.22964" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="20" stroke="#248724" fill="none"/>
+  <line id="svg_26" y2="210.87408" x2="233.89631" y1="328.20741" x1="113.00742" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="20" stroke="#248724" fill="none"/>
+  <line id="svg_30" y2="445.54075" x2="221.45186" y1="365.54075" x1="73.89631" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="20" stroke="#ff0000" fill="none"/>
+  <line id="svg_31" y2="361.98519" x2="216.11853" y1="452.65186" x1="73.89631" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="20" stroke="#ff0000" fill="none"/>
+  <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="Sans-serif" font-size="120" id="svg_4" y="298.06668" x="403.33334" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">abc</text>
+  <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="Sans-serif" font-size="120" y="428.85" x="403.78333" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000" id="svg_2">efg</text>
+ </g>
+</svg>

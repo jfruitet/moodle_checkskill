@@ -1,0 +1,22 @@
+Item text,Indent,Type (0 - normal; 1 - optional; 2 - heading),Due Time (timestamp),Colour (red; orange; green; purple; black)
+C2i1,0,0,0,purple
+C2i1 D1.1.1 :: Organiser un espace de travail complexe,1,0,0,0
+C2i1 D1.2.1 :: Sécuriser son espace de travail local et distant,1,0,0,0
+C2i1 D1.3.1 :: Tenir compte des enjeux de l’interopérabilité,1,0,0,0
+C2i1 D1.4.1 :: Pérenniser ses données,1,0,0,0
+C2i1 D2.1.1 :: Maîtriser son identité numérique privée, institutionnelle et professionnelle,1,0,0,0
+C2i1 D2.2.1 :: Veiller à la protection de la vie privée et des données à caractère personnel,1,0,0,0
+C2i1 D2.3.1 :: Être responsable face aux réglementations concernant l’utilisation de ressources numériques,1,0,0,0
+C2i1 D2.4.1 :: Adopter les règles en vigueur et se conformer au bon usage du numérique,1,0,0,0
+C2i1 D3.1.1 :: Structurer et mettre en forme un document,1,0,0,0
+C2i1 D3.2.1 :: Insérer des informations générées automatiquement,1,0,0,0
+C2i1 D3.3.1 :: Réaliser un document composite,1,0,0,0
+C2i1 D3.4.1 :: Exploiter des données dans des feuilles de calcul,1,0,0,0
+C2i1 D3.5.1 :: Préparer ou adapter un document pour le diffuser,1,0,0,0
+C2i1 D4.1.1 :: Rechercher de l’information avec une démarche adaptée,1,0,0,0
+C2i1 D4.2.1 :: Evaluer les résultats d’une recherche,1,0,0,0
+C2i1 D4.3.1 :: Récupérer et référencer une ressource numérique en ligne,1,0,0,0
+C2i1 D4.4.1 :: Organiser une veille informationnelle,1,0,0,0
+C2i1 D5.1.1 :: Communiquer avec un ou plusieurs interlocuteurs,1,0,0,0
+C2i1 D5.2.1 :: Participer à l’activité en ligne d’un groupe,1,0,0,0
+C2i1 D5.3.1 :: Élaborer une production dans un contexte collaboratif,1,0,0,0

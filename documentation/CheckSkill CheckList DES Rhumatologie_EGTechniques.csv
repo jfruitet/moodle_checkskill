@@ -1,0 +1,270 @@
+Item text,Indent,Type (0 - normal; 1 - optional; 2 - heading),Due Time (timestamp),Colour (red; orange; green; purple; black)
+**** GESTES TECHNIQUES ****,0,2,0,purple
+Ponctionner un genou,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Ponctionner une épaule,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Infiltrer une épaule,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Infiltrer un poignet,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Infiltrer un canal carpien,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Ponctionner un coude,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Infiltrer une épicondylite,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Faire une infiltration épidurale,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Infiltration des articulaires postérieures,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Injection intra-discale,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Ponctionner une articulation digitale,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Infiltrer une téno-synovite,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Infiltrer un nodule tendineux de la main,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Infiltrer un nodule tendineux de la main,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Ponctionner une cheville,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Infiltrer une fasciite plantaire,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Ponctionner une acromio-claviculaire,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Ponctionner une temporo-maxillaire,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Ponctionner la hanche,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Infiltrer une bursite trochantérienne,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Ponctionner ou infiltrer une articulation sous contrôle scopique,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Ponctionner ou infiltrer une articulation sous contrôle échographique,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Ponctionner la sacro-iliaque,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Faire un lavage articulaire du genou,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Attelle de posture pour rhizarthrose,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Attelle de posture des mains et poignets pour polyarthrite rhumatoïde,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Lombostat,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Minerve,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Orthèses plantaires pour polyarthrite rhumatoïde,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Orthèses plantaires pour pied creux,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Orthèses plantaires pour talalgie inférieure,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Orthèses plantaires pour pied plat,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Rééducation d'une lombalgie chronique mécanique,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Rééducation d'une arthropathie fémoro-patellaire,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Rééducation d'une arthropathie fémoro-patellaire,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Rééducation d'une coxarthrose,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Rééducation d'un canal lombaire rétréci,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Rééducation d'un syndrome du défilé thoraco-brachial,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Manipulations vertébrales,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Tractions cervicales,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Tractions lombaires,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Traitement de la maladie de Dupuytren par aponévrotomie à l’aiguille,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Mise en place d'une prothèse totale de hanche,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Mise en place d'une prothèse totale de genou,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Cure chirurgicale de hernie discale,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Arthroscopie,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Radiographie du rachis,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Radiographie des genoux,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Radiographie des mains - pieds,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Sacco-radiculographie,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+IRM du rachis,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Scanner du rachis,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Electromyogramme,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Densitométrie osseuse,0,2,0,black
+Je l'ai fait,1,0,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,1,0,black
+Ultrasons - échographie ostéo-articulaire,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Analyse cytologique du liquide synovial,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Analyse bactériologique du liquide synovial,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Biopsie de synoviale,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Biopsie de l'artère temporale,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Biopsie musculaire,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Biopsie cutanée,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Biopsie des glandes salivaires,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,0,0,black
+J'en connais le principe et les indications,1,1,0,black
+Biopsie ostéo-médullaire,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Biopsie osseuse radioguidée,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Biopsie trans-iliaque,0,2,0,black
+Je l'ai fait,1,1,0,black
+Je l'ai vu faire,1,1,0,black
+J'en connais le principe et les indications,1,0,0,black
+Faire des diapositives sur internet,0,2,0,black
+Je sais faire,1,0,0,black
+Faire une recherche sur Medline,0,2,0,black
+Je sais faire,1,0,0,black
+Rédiger une bibliographie,0,2,0,black
+Je sais faire,1,0,0,black
+Consultation externe en solo,0,2,0,black
+Je sais faire,1,0,0,black
