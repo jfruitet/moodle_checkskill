@@ -2,10 +2,13 @@
 # Checkskill - Moodle module
 
 Checkskill Version : $module->release  = 'JF-2.x (Build: 2014101300)';
+
 By jean.fruitet@univ-nantes.fr
 
 CheckSkill  is a fork on Checklist plugin
+
 https://github.com/davosmith/moodle-checklist
+
 I have made some additions to the original code to get some new functionnalities, so:
 
 * Users may comment their Skills / Tasks and upload files or URL as prove of practice.
@@ -13,10 +16,10 @@ I have made some additions to the original code to get some new functionnalities
 	* user can add file to descriptions
 	* user can export (if configured) the list of items to Mahara
 
-* Teacher may import a list of Outcomes as list of task / skills
-* teacher may export items as Outcomes
+* Teacher may import a list of Outcomes as list of tasks / skills
+* Teacher may export items as Outcomes
 
-When outcomes are imported in CheckSkills, these outcomes are checked automaticaly in CheckSkill when checked in any Moodle activity using these outcomes in the same course.
+When outcomes are imported in CheckSkill, these outcomes are checked automaticaly in CheckSkill when checked in any Moodle activity using these outcomes in the same course.
  
 
 ## How CheckSkill differs from CheckList
@@ -49,7 +52,6 @@ locallib.php : many functions added or  modified
 
 
 2. Import of Outcomes file (csv format) to get Outcomes as Items in Checkskill
-
 Teachers may import Outcomes (outcomes.csv) files in Checkskill to get these outcomes as Items.
 Furthermore any Item of Checkskill may be validated by the way of Moodle activity
 (Assignment or Quizz for exemple) which uses the same Outcomes.
@@ -60,7 +62,6 @@ Furthermore any Item of Checkskill may be validated by the way of Moodle activit
 $CFG->checkskill_outcomes_input
 
 	c. New scripts :
-
 importexportoutcomes.php
 import_outcomes.php
 export_outcomes.php
@@ -70,7 +71,7 @@ cron_outcomes.php
 
 	d. Scripts modification
 lib.php ::
-    // Process Outcomes as Items
+// Process Outcomes as Items
     $outcomesupdate = 0;
     if (!empty($CFG->enableoutcomes)){
         require_once($CFG->dirroot.'/mod/checkskill/cron_outcomes.php');
@@ -90,7 +91,7 @@ lib.php ::
 locallib.php ::
 function view_import_export() {
 (...)
-        // MODIF JF 2012/03/18
+// MODIF JF 2012/03/18
         if (USES_OUTCOMES && !empty($CFG->checkskill_outcomes_input)){
             $importoutcomesurl = new moodle_url('/mod/checkskill/import_outcomes.php', array('id' => $this->cm->id));
             $importoutcomesstr = get_string('import_outcomes', 'checkskill');
@@ -106,7 +107,7 @@ function view_import_export() {
 
 autoupdate.php
 In function checkskill_autoupdate(
-    // MODIF JF 2012/03/18
+// MODIF JF 2012/03/18
     if ($module == 'referentiel') {
         return 0;
     }
