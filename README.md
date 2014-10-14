@@ -27,19 +27,21 @@ When outcomes are imported in CheckSkill, these outcomes are checked automatical
 1. New data description and document
 
 	a. New DB tables 'checkskill_description' and 'checkskill_document'
+	
 	b. New config parameter :
 $CFG->checkskill_description_display
 New script
 ./mod/checkskill/settings.php
+
 	c. New scripts
 edit_description.php
 edit_document.php
 delete_description.php
 delete_document.php
 file_api.php
-	d. Scripts modification
-lib.php :
 
+2. Portfolio Mahara export
+lib.php :
 // MOODLE 2.0 FILE API
 	function checkskill_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
 //Serves activite documents and other files.
@@ -50,8 +52,8 @@ locallib.php : many functions added or  modified
 	New function view_select_export, select_items, *_description, *_document,  checkskill_affiche_url
 	Functions modified : view_tabs, view, deleteitem, etc.
 
+3. Import of Outcomes file (csv format) to get Outcomes as Items in Checkskill
 
-2. Import of Outcomes file (csv format) to get Outcomes as Items in Checkskill
 Teachers may import Outcomes (outcomes.csv) files in Checkskill to get these outcomes as Items.
 Furthermore any Item of Checkskill may be validated by the way of Moodle activity
 (Assignment or Quizz for exemple) which uses the same Outcomes.
@@ -68,6 +70,7 @@ export_outcomes.php
 export_selected_outcomes.php
 select_export.php
 cron_outcomes.php
+file_api.php
 
 	d. Scripts modification
 lib.php ::
@@ -80,12 +83,6 @@ lib.php ::
     if ($outcomesupdate) {
         mtrace(" Updated $outcomesupdate checkmark(s) from outcomes changes");
     }
-
-// MOODLE 2.0 FILE API
-    function checkskill_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload) {
-//Serves activite documents and other files.
-    function checkskill_send_file($course, $cm, $context, $filearea, $args) {
-// Serves activite documents and other files.
 
 
 locallib.php ::
