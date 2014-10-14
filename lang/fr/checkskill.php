@@ -43,7 +43,7 @@ $string['autoupdatewarning_both'] = 'Il y a des items sur cette liste qui seront
 $string['autoupdatewarning_student'] = 'Il y a des items sur cette liste qui seront automatiquement mis à jour (comme ceux que les étudiants disent "complet").';
 $string['autoupdatewarning_teacher'] = 'La mise à jour automatique a été activée pour cette liste, mais ces remarques ne seront pas affichée tant que l\'enseignant ne les montre pas.';
 
-$string['canceledititem'] = 'Effacer';
+$string['canceledititem'] = 'Arrêter la saisie';
 
 $string['calendardescription'] = 'Cet élément a été ajouté par la liste des t&acirc;ches : {$a}';
 

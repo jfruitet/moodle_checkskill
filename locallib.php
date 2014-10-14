@@ -3779,7 +3779,7 @@ class checkskill_class {
         }        
 
         if ($itemid && $userid) {
-            // $item = $DB->get_record('checkskill_item', array("id"=>$itemid));
+            $item = $DB->get_record('checkskill_item', array("id"=>$itemid));
             $description = $DB->get_record('checkskill_description', array("itemid"=>$itemid, "userid"=>$userid));
             if (!empty($description)){
                 $documents = $DB->get_records('checkskill_document', array("descriptionid" => $description->id));
@@ -3812,7 +3812,7 @@ class checkskill_class {
             echo $OUTPUT->box_start('generalbox boxwidthwide boxaligncenter');
             echo format_text($this->checkskill->intro, $this->checkskill->introformat);
             echo '<br/>';
-            echo $this->items[$itemid]->displaytext;
+            echo $item->displaytext;
             echo '<br/>';
             $mform->display();
 
