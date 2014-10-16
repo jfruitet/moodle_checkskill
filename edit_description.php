@@ -49,7 +49,8 @@ if ($id) {
     $checkskill = $DB->get_record('checkskill', array('id' => $cm->instance), '*', MUST_EXIST);
     $url->param('id', $id);
     $returnurl->param('id', $id);
-} else if ($checkskillid) {
+}
+else if ($checkskillid) {
     $checkskill = $DB->get_record('checkskill', array('id' => $checkskillid), '*', MUST_EXIST);
     $course = $DB->get_record('course', array('id' => $checkskill->course), '*', MUST_EXIST);
     if (!$cm = get_coursemodule_from_instance('checkskill', $checkskill->id, $course->id)) {
@@ -57,7 +58,8 @@ if ($id) {
     }
     $url->param('checkskill', $checkskillid);
     $returnurl->param('checkskill', $checkskillid);
-} else {
+}
+else {
     print_error('error_specif_id', 'checkskill'); // 'You must specify a course_module ID or an instance ID'
 }
 

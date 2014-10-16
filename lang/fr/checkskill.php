@@ -102,6 +102,7 @@ $string['eventcheckskillcomplete'] = 'Cett liste de compétences et de tâches e
 $string['eventeditpageviewed'] = 'Editer la page affichée';
 $string['eventreportviewed'] = 'Rapport affiché';
 $string['eventstudentchecksupdated'] = 'Coches de l\'étudiant mises à jour';
+$string['eventstudentdescriptionupdated'] = 'Description d\'un item de CheckSkill mise à jour';
 $string['eventteacherchecksupdated'] = 'Coches de l\'enseignant mises à jour';
 
 $string['export'] = 'Exporter des items';
@@ -179,9 +180,11 @@ $string['togglecolumn'] = 'Inverser les colonnes';
 $string['togglerow'] = 'Inverser les lignes';
 $string['theme'] = 'Thème graphique pour afficher la liste des compétences';
 
+
 $string['updatecompletescore'] = 'Sauvegarder les notes d\'achèvement';
 $string['unindentitem'] = 'Item non indenté';
 $string['updateitem'] = 'Mise à jour';
+$string['userdate'] = 'Date de mise à jour de cet item';
 $string['useritemsallowed'] = 'L\'utilisateur peut ajouter ses propres items';
 $string['useritemsdeleted'] = 'Items de l\'utilisateur supprimés';
 

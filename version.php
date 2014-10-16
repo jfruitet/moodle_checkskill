@@ -30,7 +30,7 @@ if (!isset($plugin)) {
     $plugin = new stdClass();
 }
 // Used by M2.6 and above.
-$plugin->version  = 2014101300;  // The current module version (Date: YYYYMMDDXX)
+$plugin->version  = 2014101301;  // The current module version (Date: YYYYMMDDXX)
 $plugin->cron     = 60;          // Period for cron to check this module (secs)
 $plugin->maturity = MATURITY_STABLE;
 $plugin->release  = '2.x (Build from Checklist by JF: : 2014101300)';

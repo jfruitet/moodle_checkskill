@@ -2219,7 +2219,11 @@ class checkskill_class {
             if (optional_param('duetimedisable', false, PARAM_BOOL)) {
                 $duetime = false;
             } else {
-                $duetime = optional_param('duetime', false, PARAM_INT);
+            	if ($CFG->version < 2011120100) {
+                	$duetime = optional_param('duetime', false, PARAM_INT);
+            	} else {
+                	$duetime = optional_param_array('duetime', false, PARAM_INT);
+            	}
             }
             $this->additem($displaytext, 0, $indent, $position, $duetime);
             if ($position) {
@@ -2239,11 +2243,11 @@ class checkskill_class {
             if (optional_param('duetimedisable', false, PARAM_BOOL)) {
                 $duetime = false;
             } else {
-            if ($CFG->version < 2011120100) {
-                $duetime = optional_param('duetime', false, PARAM_INT);
-            } else {
-                $duetime = optional_param_array('duetime', false, PARAM_INT);
-            }
+            	if ($CFG->version < 2011120100) {
+                	$duetime = optional_param('duetime', false, PARAM_INT);
+            	} else {
+                	$duetime = optional_param_array('duetime', false, PARAM_INT);
+            	}
             }
             $this->updateitemtext($itemid, $displaytext, $duetime);
             break;
@@ -3391,16 +3395,16 @@ class checkskill_class {
         $this->userid = false;
     }
 
-    static function print_user_progressbar($checkskillid, $userid, $width='300px', $showpercent=true, $return=false) {
+    static function print_user_progressbar($checkskillid, $userid, $width='300px', $showpercent=true, $return=false, $hidecomplete=false) {
         global $OUTPUT;
 
         list($ticked, $total) = checkskill_class::get_user_progress($checkskillid, $userid);
         if (!$total) {
-            return;
+            return '';
         }
         if ($hidecomplete && ($ticked == $total)) {
             return '';
-        }		
+        }
         $percent = $ticked * 100 / $total;
 
         // TODO - fix this now that styles.css is included
@@ -3416,8 +3420,8 @@ class checkskill_class {
         }
 
         echo $output;
-		return '';
-	}
+        return '';
+    }
 
     static function get_user_progress($checkskillid, $userid) {
         global $DB, $CFG;
@@ -3771,8 +3775,9 @@ class checkskill_class {
             $params = array(
                 'contextid' => $this->context->id,
                 'objectid' => $this->checkskill->id,
+				'other' => array('itemid' => $itemid),
             );
-            $event = \mod_checkskill\event\edit_page_viewed::create($params);
+            $event = \mod_checkskill\event\student_edit_description::create($params);
             $event->trigger();
         } else { // Before Moodle 2.7
 			add_to_log($this->course->id, 'checkskill', 'view', "edit_description.php?id={$this->cm->id}", $this->checkskill->id, $this->cm->id);

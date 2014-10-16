@@ -109,6 +109,7 @@ $string['eventcheckskillcomplete'] = 'Checkskill complete';
 $string['eventeditpageviewed'] = 'Edit page viewed';
 $string['eventreportviewed'] = 'Report viewed';
 $string['eventstudentchecksupdated'] = 'Student checks updated';
+$string['eventstudentdescriptionupdated'] = 'CheckSkill Item description updated';
 $string['eventteacherchecksupdated'] = 'Teacher checks updated';
 
 $string['export'] = 'Export items';
@@ -191,6 +192,7 @@ $string['theme'] = 'Checkskill display theme';
 $string['updatecompletescore'] = 'Save completion grades';
 $string['unindentitem'] = 'Unindent item';
 $string['updateitem'] = 'Update';
+$string['userdate'] = 'Date the user last updated this item';
 $string['useritemsallowed'] = 'User can add their own items';
 $string['useritemsdeleted'] = 'User items deleted';
 
