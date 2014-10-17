@@ -33,9 +33,9 @@ define("CHECKL_TEACHERMARK_NO", 2);
 define("CHECKL_TEACHERMARK_YES", 1);
 define("CHECKL_TEACHERMARK_UNDECIDED", 0);
 
-// define ('CHECKSKILL_DEBUG', 0);    // INACTIVE DEBUG : if set to 1 cron trace many many things :))
-define("CHECKSKILL_DEBUG", 1); // impact cron to checks outcomes from CHECKSKILL_OUTCOMES_DELAY to CHECKSKILL_OUTCOMES_DELAY weeks
-define("CHECKSKILL_SUPER_DEBUG", 1);     // very verbose
+define ('CHECKSKILL_DEBUG', 0);    // INACTIVE DEBUG : if set to 1 cron trace many many things :))
+//define("CHECKSKILL_DEBUG", 1); // impact cron to checks outcomes from CHECKSKILL_OUTCOMES_DELAY to CHECKSKILL_OUTCOMES_DELAY weeks
+//define("CHECKSKILL_SUPER_DEBUG", 1);     // very verbose
 //define("CHECKSKILL_SUPER_DEBUG", 0);
 define("CHECKSKILL_OUTCOMES_DELAY", 2); // how may days the cron examines the outcomes data
 // Increase this value to take into account more former outcomes evaluations
@@ -97,7 +97,7 @@ global $OUTPUT; // for icons
     }	
 
     $notations=checkskill_get_outcomes($starttime, $endtime);
-    if (CHECKSKILL_SUPER_DEBUG){
+    if (CHECKSKILL_DEBUG){
         mtrace("\nDEBUG :: cron_outcomes.php Line 80 :: \nNOTATIONS\n");
         print_r($notations);
     }
@@ -106,7 +106,7 @@ global $OUTPUT; // for icons
     if ($notations){
         foreach($notations as $notation){
             if ($notation){
-                if (CHECKSKILL_SUPER_DEBUG){
+                if (CHECKSKILL_DEBUG){
                     mtrace("\nDEBUG :: cron_outcomes.php Line 89 :: USERID ".$notation->userid." ; COURSEID ".$notation->courseid."\nNOTATION :\n");
                     print_r($notation);
                 }
@@ -134,7 +134,8 @@ global $OUTPUT; // for icons
                             $checkskill_object->checkskill_check_userid=$notation->userid;
                             $checkskill_object->checkskill_check_usertimestamp=$m->date;
                             $checkskill_object->checkskill_check_teachermark=CHECKL_MARKING_TEACHER; // A VERIFIER
-                            $checkskill_object->checkskill_check_teachertimestamp=$m->date;
+                            // $checkskill_object->checkskill_check_teachertimestamp=$m->date;       // ERREUR
+                            $checkskill_object->checkskill_check_teachertimestamp=$notation->timemodified;
                             $checkskill_object->checkskill_check_teacherid=$notation->teacherid;
 
                             $checkskill_object->checkskill_comment_itemid=$notation->itemid;
@@ -155,22 +156,25 @@ global $OUTPUT; // for icons
 
                             // ------------------
                             if ($scale){
-                                // echo "\n $scale->scale\n";
-                                // print_r($scale->scaleopt);
-                                // echo $scale->scaleopt[(int)$val]."\n";
+                                echo "\n $scale->scale\n";
+                                print_r($scale->scaleopt);
 
-                                if ($notation->finalgrade>=$scale->grademax){
-                                    // echo " ---&gt; VALIDE \n";
+                                echo "\n {$notation->finalgrade} ::: {$scale->grademax}\n";
+
+								if ($notation->finalgrade>=$scale->grademax){
+                                    echo " ---&gt; VALIDE \n";
                                     $checkskill_object->valide=1;
-                                    if (checkskill_set_outcomes($checkskill_object)){
+                                    /**
+                                     if (checkskill_set_outcomes($checkskill_object)){
                                         if (CHECKSKILL_SUPER_DEBUG){
                                             mtrace("\nDEBUG :: cron_outcomes.php Line 280\n-----------------\nENREGISTREE\n");
                                         }
                                         $n_maj++;
                                     }
+									************/
                                 }
                                 else{
-                                    // echo " ---&gt; INVALIDE \n";
+                                    echo " ---&gt; INVALIDE \n";
                                     $checkskill_object->valide=0;
                                 }
                             }
@@ -179,7 +183,7 @@ global $OUTPUT; // for icons
 
                             // enregistrer l'activite
                             // DEBUG
-                            if (CHECKSKILL_SUPER_DEBUG){
+                            if (CHECKSKILL_DEBUG){
                                 mtrace("\nDEBUG :: cron_outcomes.php Line 274 ; CHECKLIST OBJECTS\n");
                                 print_r($checkskill_object);
                             }
@@ -368,329 +372,7 @@ global $DB;
   return $m;
 }
 
-/************************* NEW **********************
-// -------------------------------------------------
-function checkskill_get_outcomes($starttime, $endtime){
-// genere la liste des notations
-global $CFG;
-global $DB;
-global $t_items_records;
-
-$notations=array();
-$t_referentiels=array();
-$t_items_records=array();
-    
-// selectionner tous les codes outcomes
-$params=array();
-$sql = "SELECT {checkskill_item}.id AS itemid,
-        {checkskill_item}.displaytext AS displaytext,
-        {checkskill}.id AS instanceid,
-        {checkskill}.course AS courseid
-  FROM {checkskill}, {checkskill_item}
-  WHERE {checkskill}.id={checkskill_item}.checkskill
-  ORDER BY {checkskill}.course ASC, {checkskill}.id ASC, {checkskill_item}.displaytext ASC ";
-  
-$r_checkskills=$DB->get_records_sql($sql, $params);
-if ($r_checkskills){
-        // DEBUG
-        //if   (CHECKSKILL_DEBUG){
-        //        mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 378 :: COMPOSITE DATA\n");
-        //        print_r($r_checkskills);
-        //}
-
-        foreach($r_checkskills as $r_checkskill){
-            $item_outcome=new Object();
-            $item_outcome->itemid=$r_checkskill->itemid;
-            $item_outcome->displaytext=$r_checkskill->displaytext;
-            $item_outcome->courseid=$r_checkskill->courseid;
-            $item_outcome->instanceid=$r_checkskill->instanceid;
-            $item_outcome->outcome='';
-            $item_outcome->code_referentiel='';
-            $item_outcome->code_competence='';
-
-            // DEBUG
-            if   (CHECKSKILL_DEBUG){
-                mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 380 :: COMPOSITE DATA\n");
-                print_r($r_checkskill);
-            }
-
-            // First extract outcomes from items skill
-            // Searched matches
-            // C2i2e-2011 A.1-1 :: Identifier les personnes resso...
-            if (preg_match('/(.*)::(.*)/i', $r_checkskill->displaytext, $matches)){
-                // DEBUG
-
-                if   (CHECKSKILL_DEBUG){
-                    mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 391 :: MATCHES\n");
-                    print_r($matches);
-                }
-
-                if ($matches[1]){
-                    //
-                    $item_outcome->outcome=trim($matches[1]);
-                    if ($keywords = preg_split("/[\s]+/",$matches[1],-1,PREG_SPLIT_NO_EMPTY)){
-
-                        if   (CHECKSKILL_DEBUG){
-                            mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 401 :: CHECKSKILLS\n");
-                            print_r($keywords);
-                        }
-
-                        
-                        if ($keywords[0]){
-                            $item_outcome->code_referentiel=trim($keywords[0]);
-                        }
-                        if ($keywords[1]){
-                            $item_outcome->code_competence=trim($keywords[1]);
-                        }
-                    }
-                }
-
-                // DEBUG
-                if   (CHECKSKILL_DEBUG){
-                    mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 417 :: ITEM_OUTCOME\n");
-                    print_r($item_outcome);
-                }
-            }
-            
-            if (!empty($item_outcome->code_referentiel)){
- 	    		// selectionner les outcomes
-				$params=array("fullname" => "$item_outcome->code_referentiel%") ;
-				$sql = "SELECT id, shortname, fullname, scaleid
-					FROM {grade_outcomes}
-					WHERE fullname LIKE :fullname
-					ORDER BY fullname ASC ";
-				if (CHECKSKILL_DEBUG){
-  					mtrace("\nDEBUG :: Line 443\n");
-            		print_r($params);
-					mtrace("\nSQL:$sql\n");
-  				}
-
-				$r_outcomes=$DB->get_records_sql($sql, $params);
-		        if (CHECKSKILL_DEBUG){
-  					mtrace("\nDEBUG :: Line 450\n");
-            		print_r($r_outcomes);
-					mtrace("\n");
-		        }
-
-				if ($r_outcomes){
-					$t_outcomes=array();  // liste des objectifs associés à cette occurrence
-
-        			foreach ($r_outcomes as $r_outcome){
-						// selectionner les items (activites utilisant ces outcomes)
-						$a = new Object();
-        		        $a->id=$r_outcome->id;
-                		$a->shortname=$r_outcome->shortname;
-		                $a->scaleid=$r_outcome->scaleid;
-        		        $t_outcomes[$r_outcome->id]=$a;
-					}
-
-					$where1='';
-					$params1=array();
-        		    $params1[]='';  // item module not null
-					if (!empty($t_outcomes)){
-						foreach ($t_outcomes as $outcome) {
-							if (!empty($outcome->id)){
-                        		$params1[]=$item_outcome->courseid;
-                    			$params1[]=$outcome->id;
-                        		$params1[]=$outcome->scaleid;      // jointure scaleid identique
-								if (!empty($where1)){
-									$where1=$where1 . ' OR ((courseid=?) AND (outcomeid=?) AND (scaleid=?)) ';
-								}
-								else {
-        	        				$where1=' ((courseid=?) AND (outcomeid=?) AND (scaleid=?)) ';
-								}
-							}
-						}
-
-    	    			if (!empty($where1)){
-							$where1=' (itemmodule != ?) AND ('. $where1 . ')';
-
-							$sql1='SELECT id, courseid, itemmodule, iteminstance, grademin, grademax, scaleid FROM {grade_items} WHERE '.$where1.' ORDER BY iteminstance, outcomeid  ';
-
-							if (CHECKSKILL_DEBUG){
-  								mtrace("\nDEBUG :: Line 491 :: PARAMETRES REQUETE \n");
-								print_r($params1);
-								mtrace("\nSQL : $sql1\n");
-          					}
-
-		            		$r_items_ids=$DB->get_records_sql($sql1, $params1);
-
-
-        		  			if ($r_items_ids){
-								// DEBUG
-              					if (CHECKSKILL_DEBUG){
-	                				mtrace("DEBUG :: Line 502 :: GRADE_ITEMS IDS Outcomes <br/>\n");
-    	            				print_r($r_items_ids);
-        		      			}
-
-								// selectionner les grades_grades correspondants
-								$where2='';
-								$params2=array();
-
-								if (!empty($r_items_ids)){
-									foreach ($r_items_ids as $r_items_id) {
-                		    			$params2[]=$r_items_id->id;        // jointure itemid identique
-                    					$params2[]=$starttime;
-		                    			$params2[]=$endtime;
-										if (!empty($where2)){
-											$where2=$where2 . ' OR ((itemid=?) AND(timemodified >= ?) AND (timemodified < ?)) ';
-										}
-										else {
-		        	        				$where2=' ((itemid=?) AND (timemodified >= ?) AND (timemodified < ?)) ';
-										}
-									}
-                                	if (!empty($where2)){
-										$where2=' ('. $where2 . ')';
-										$sql2='SELECT id, itemid, userid, rawgrademax, rawgrademin, rawscaleid, usermodified, finalgrade, timemodified
- FROM {grade_grades}
- WHERE '.$where2.' ORDER BY itemid, timemodified DESC ';
-
-										if (CHECKSKILL_DEBUG){
-	  										mtrace("\nDEBUG :: Line 529 :: PARAMETRES REQUETE\n");
-											print_r($params2);
-											mtrace("\nSQL : $sql2\n");
-          								}
-            							$r_grades_recents=$DB->get_records_sql($sql2, $params2);
-
-										if ($r_grades_recents){
-											// rechercher les activites correspondantes
-											// drapeau pour eviter de traiter plusieurs fois la même ligne grade_grades
-											$t_grades_traites=array();
-
-											foreach ($r_grades_recents as $r_grades_recent) {
-	          									$params3=array("itemid" => "$r_grades_recent->itemid");
-    	      									$sql3 = "SELECT id, courseid, categoryid, itemname, itemtype, itemmodule, iteminstance, itemnumber, iteminfo, idnumber, calculation, gradetype, grademax, grademin, scaleid, outcomeid, timemodified
- FROM {grade_items}  WHERE id= :itemid ORDER BY courseid, outcomeid ASC ";
-												if (CHECKSKILL_DEBUG){
-  													mtrace("\nDEBUG :: Line 544\n");
-													print_r($params3);
-													mtrace("\nSQL : $sql3\n");
-        	  									}
-          										$r_item_isole=$DB->get_record_sql($sql3, $params3);
-
-												if ($r_item_isole){
-    	                                	        if (CHECKSKILL_DEBUG){
-        	                                	        mtrace("\nDEBUG :: Line 553");
-														print_r($r_item_isole);
-                	    	    						mtrace("\n");
-													}
-
-													// rechercher toutes les lignes similaires en dhors de la fenetre temporelle
-    	      										$params4=array("courseid" => "$r_item_isole->courseid", "iteminstance" => "$r_item_isole->iteminstance", "scaleid" => $r_item_isole->scaleid, "outcomenull" => "" );
-	    	      									$sql4 = "SELECT id, courseid, categoryid, itemname, itemtype, itemmodule, iteminstance, itemnumber, iteminfo, idnumber, calculation, gradetype, grademax, grademin, scaleid, outcomeid, timemodified
- FROM {grade_items}  WHERE courseid=:courseid AND iteminstance=:iteminstance AND scaleid=:scaleid AND outcomeid!=:outcomenull ORDER BY courseid, outcomeid ASC ";
-													if (CHECKSKILL_DEBUG){
-  														mtrace("\nDEBUG :: Line 563\n");
-														print_r($params4);
-														mtrace("\nSQL : $sql4\n");
-	          										}
-
-    	      										$r_items=$DB->get_records_sql($sql4, $params4);
-
-													if (!empty($r_items)){
-    	                    	                    	if (CHECKSKILL_DEBUG){
-        	                    	                        mtrace("\nDEBUG :: Line 572");
-															print_r($r_items);
-                	    	    							mtrace("\n");
-														}
-
-														$t_items=array();
-												 		$where5='';
-														$params5=array();
-														foreach ($r_items as $r_item) {
-															$t_items[$r_item->id]=$r_item;   // stocker l'objet dans un tableau indexe par l'id (jointure itemid de grade_grades à l'etape suivante)
-            	        									$params5[]=$r_item->id;
-                	    									$params5[]=$endtime;
-	                	                                    $params5[]=$r_grades_recent->userid;
-															if (!empty($where5)){
-																$where5=$where5 . ' OR ((itemid=?) AND (timemodified < ?) AND (userid=?)) ';
-															}
-															else {
-        	        											$where5=' ((itemid=?) AND (timemodified < ?) AND (userid=?)) ';
-															}
-                                                        }
-
-	    	    										if (!empty($where5)){
-															$where5=' ('. $where5 . ')';
-															$sql5='SELECT id, itemid, userid, rawgrademax, rawgrademin, rawscaleid, usermodified, finalgrade, timemodified
- FROM {grade_grades}
- WHERE  '.$where5.'  ORDER BY itemid, timemodified ';
-															if (CHECKSKILL_DEBUG){
-  																mtrace("\nDEBUG :: \nLine 599\n");
-																print_r($params5);
-																mtrace("\nSQL : $sql5\n");
-          													}
-
-	                    	                                $r_grades=$DB->get_records_sql($sql5, $params5);
-
-															if ($r_grades){
- 						        	        					foreach($r_grades as $r_grade){
-																	if (($r_grade) && (isset($t_outcomes[$t_items[$r_grade->itemid]->outcomeid]))){
-                	                    	                            if (!isset($t_grades_traites[$r_grade->id])){
-																			$t_grades_traites[$r_grade->id]=1;
-																		}
-                														else{
-                                	                    	                $t_grades_traites[$r_grade->id]=0;
-																		}
-
-																		if (!empty($t_grades_traites[$r_grade->id])){
-                                    										// DEBUG
-                                    										if   (CHECKSKILL_DEBUG){
-																				mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php Line 619\n");
-    	                                    									mtrace ("CHECKSKILL INSTANCE : ".$item_outcome->instanceid."\nCOURSE ID: ".$item_outcome->courseid."\n");
-        	                                									mtrace ("DISPLAY : ".$item_outcome->displaytext."\n");
-										                                        mtrace ("ITEM CHECKSKILL : ".$item_outcome->itemid."\n");
-                	                     										mtrace ("CHECKSKILL : ".$item_outcome->code_referentiel."\n");
-										                                        mtrace ("COMPETENCE : ".$item_outcome->code_competence."\n");
-                        	            									    mtrace ("OUTCOME : ".$item_outcome->outcome."\n");
-										                                        mtrace ("OBJECTIF : Id:".$r_outcome->id." Nom:".$r_outcome->fullname."\n");
-                                	    									    mtrace ("GRADE ITEM: Num_Cours:".$r_item->courseid.", Nom_Item:".$r_item->itemname.", module:".$r_item->itemmodule.", instance:".$r_item->iteminstance.", Num_Objectif:".$r_item->outcomeid);
-                                    										}
-
-                                        	        						// stocker l'activite pour traitement
-						                    	                            $notation=new Object();
-                        							                        $notation->instanceid=$item_outcome->instanceid;
-                                                							$notation->courseid=$item_outcome->courseid;
-						                                	                $notation->itemid=$item_outcome->itemid;
-                        						            	            $notation->code_referentiel=$item_outcome->code_referentiel;
-																			// outcome
-					            	          								$notation->outcomeid= $t_items[$r_grade->itemid]->outcomeid;
-		        						              						$notation->outcomeshortname= $t_outcomes[$t_items[$r_grade->itemid]->outcomeid]->shortname;
-		                                                                    $notation->scaleid= $t_outcomes[$t_items[$r_grade->itemid]->outcomeid]->scaleid;
-																			// activity
-    		            								      				$notation->itemname= $t_items[$r_grade->itemid]->itemname;
-									                    	  				$notation->module=  $t_items[$r_grade->itemid]->itemmodule;
-        				    					          					$notation->moduleinstance= $t_items[$r_grade->itemid]->iteminstance;
-																			// grade
-																			$notation->userid=$r_grade->userid;
-									                      					$notation->teacherid=$r_grade->usermodified;
-	                            	                                        $notation->scaleid= $t_outcomes[$t_items[$r_grade->itemid]->outcomeid]->scaleid;
-		        									              			$notation->finalgrade=$r_grade->finalgrade;
-						    		    	        		      			$notation->timemodified=$r_grade->timemodified;
-																			// archiver
-																			$notations[]= $notation;
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-  			}
-    	}
-	}
-    return $notations;
-}
-****************************/
-
+/******************************************/
 // -------------------------------------------------
 function checkskill_get_outcomes($starttime, $endtime){
 // genere le liste des notations
@@ -722,13 +404,13 @@ global $t_items_records;
 
     $r_checkskills=$DB->get_records_sql($sql, $params);
     if ($r_checkskills){
-        /*
+
         // DEBUG
         if   (CHECKSKILL_SUPER_DEBUG){
                 mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 363 :: COMPOSITE DATA\n");
                 print_r($r_checkskills);
         }
-        */
+
         foreach($r_checkskills as $r_checkskill){
             $item_outcome=new Object();
             $item_outcome->itemid=$r_checkskill->itemid;
@@ -806,13 +488,13 @@ global $t_items_records;
                         foreach($r_outcomes as $r_outcome){
                             // selectionner les items (activites utilisant ces outcomes)
                             // DEBUG
-                            /*
+
                             if   (CHECKSKILL_SUPER_DEBUG){
                                 mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php Line 610 :: R_OUTCOMES\n");
                                 print_r($r_outcome);
                                 echo "\n\n";
                             }
-                            */
+
 
                             $params=array("outcomeid" => $r_outcome->id, "courseid" => $item_outcome->courseid);
                             $sql = "SELECT `id`, `courseid`, `categoryid`, `itemname`, `itemtype`, `itemmodule`, `iteminstance`, `itemnumber`, `iteminfo`, `idnumber`, `calculation`, `gradetype`, `grademax`, `grademin`, `scaleid`, `outcomeid`, `timemodified`
@@ -888,7 +570,337 @@ global $t_items_records;
 
     return $notations;
 }
+/**********************************************/
+/************************* NEW **********************
+// -------------------------------------------------
+function checkskill_get_outcomes($starttime, $endtime){
+// genere la liste des notations
+global $CFG;
+global $DB;
+global $t_items_records;
 
+$notations=array();
+$t_referentiels=array();
+$t_items_records=array();
+
+// selectionner tous les codes outcomes
+$params=array();
+$sql = "SELECT {checkskill_item}.id AS itemid,
+        {checkskill_item}.displaytext AS displaytext,
+        {checkskill}.id AS instanceid,
+        {checkskill}.course AS courseid
+  FROM {checkskill}, {checkskill_item}
+  WHERE {checkskill}.id={checkskill_item}.checkskill
+  ORDER BY {checkskill}.course ASC, {checkskill}.id ASC, {checkskill_item}.displaytext ASC ";
+
+$r_checkskills=$DB->get_records_sql($sql, $params);
+if ($r_checkskills){
+        // DEBUG
+        if (CHECKSKILL_SUPER_DEBUG){
+                mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 378 :: COMPOSITE DATA\n");
+                print_r($r_checkskills);
+        }
+
+        foreach($r_checkskills as $r_checkskill){
+            $item_outcome=new Object();
+            $item_outcome->itemid=$r_checkskill->itemid;
+            $item_outcome->displaytext=$r_checkskill->displaytext;
+            $item_outcome->courseid=$r_checkskill->courseid;
+            $item_outcome->instanceid=$r_checkskill->instanceid;
+            $item_outcome->outcome='';
+            $item_outcome->code_referentiel='';
+            $item_outcome->code_competence='';
+
+            // DEBUG
+            if (CHECKSKILL_SUPER_DEBUG){
+                mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 380 :: COMPOSITE DATA\n");
+                print_r($r_checkskill);
+            }
+
+            // First extract outcomes from items skill
+            // Searched matches
+            // C2i2e-2011 A.1-1 :: Identifier les personnes resso...
+            if (preg_match('/(.*)::(.*)/i', $r_checkskill->displaytext, $matches)){
+                // DEBUG
+
+                if (CHECKSKILL_SUPER_DEBUG){
+                    mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 391 :: MATCHES\n");
+                    print_r($matches);
+                }
+
+                if ($matches[1]){
+                    //
+                    $item_outcome->outcome=trim($matches[1]);
+                    if ($keywords = preg_split("/[\s]+/",$matches[1],-1,PREG_SPLIT_NO_EMPTY)){
+
+                        if (CHECKSKILL_SUPER_DEBUG){
+                            mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 401 :: CHECKSKILLS\n");
+                            print_r($keywords);
+                        }
+
+
+                        if ($keywords[0]){
+                            $item_outcome->code_referentiel=trim($keywords[0]);
+                        }
+                        if ($keywords[1]){
+                            $item_outcome->code_competence=trim($keywords[1]);
+                        }
+                    }
+                }
+
+                // DEBUG
+                if (CHECKSKILL_SUPER_DEBUG){
+                    mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 653 :: ITEM_OUTCOME\n");
+                    print_r($item_outcome);
+                }
+            }
+
+            if (!empty($item_outcome->code_referentiel)){
+ 	    		// selectionner les outcomes
+				$params=array("fullname" => "$item_outcome->code_referentiel%") ;
+				$sql = "SELECT id, shortname, fullname, scaleid
+					FROM {grade_outcomes}
+					WHERE fullname LIKE :fullname
+					ORDER BY fullname ASC ";
+				if (CHECKSKILL_SUPER_DEBUG){
+  					mtrace("\nDEBUG :: Line 666\n");
+            		print_r($params);
+					mtrace("\nSQL:$sql\n");
+  				}
+
+				$r_outcomes=$DB->get_records_sql($sql, $params);
+
+				if ($r_outcomes){
+		        	if (CHECKSKILL_SUPER_DEBUG){
+  						mtrace("\nDEBUG :: Line 673\n");
+            			print_r($r_outcomes);
+						mtrace("\n");
+		        	}
+
+					$t_outcomes=array();  // liste des objectifs associés à cette occurrence
+
+        			foreach ($r_outcomes as $r_outcome){
+						// selectionner les items (activites utilisant ces outcomes)
+						$a = new Object();
+        		        $a->id=$r_outcome->id;
+                		$a->shortname=$r_outcome->shortname;
+		                $a->scaleid=$r_outcome->scaleid;
+        		        $t_outcomes[$r_outcome->id]=$a;
+					}
+
+                    if (CHECKSKILL_SUPER_DEBUG){
+                        mtrace("\nDEBUG :: Line 692\n");
+						print_r($t_outcomes);
+                        mtrace("\n");
+					}
+
+					$where1='';
+					$params1=array();
+        		    $params1[]='';  // item module not null
+					if (!empty($t_outcomes)){
+						foreach ($t_outcomes as $outcome) {
+							if (!empty($outcome->id)){
+                        		$params1[]=$item_outcome->courseid;
+                    			$params1[]=$outcome->id;
+                        		$params1[]=$outcome->scaleid;      // jointure scaleid identique
+								if (!empty($where1)){
+									$where1=$where1 . ' OR ((courseid=?) AND (outcomeid=?) AND (scaleid=?)) ';
+								}
+								else {
+        	        				$where1=' ((courseid=?) AND (outcomeid=?) AND (scaleid=?)) ';
+								}
+							}
+						}
+
+    	    			if (!empty($where1)){
+							$where1=' (itemmodule != ?) AND ('. $where1 . ')';
+
+							$sql1='SELECT id, courseid, itemmodule, iteminstance, grademin, grademax, scaleid FROM {grade_items} WHERE '.$where1.' ORDER BY iteminstance, outcomeid  ';
+
+							if (CHECKSKILL_SUPER_DEBUG){
+  								mtrace("\nDEBUG :: Line 721 :: PARAMETRES REQUETE SQL1 \n");
+								print_r($params1);
+								mtrace("\nSQL : $sql1\n");
+          					}
+
+		            		$r_items_ids=$DB->get_records_sql($sql1, $params1);
+
+
+        		  			if ($r_items_ids){
+								// DEBUG
+              					if (CHECKSKILL_SUPER_DEBUG){
+	                				mtrace("DEBUG :: Line 732 :: GRADE_ITEMS IDS Outcomes <br/>\n");
+    	            				print_r($r_items_ids);
+        		      			}
+
+								// selectionner les grades_grades correspondants
+								$where2='';
+								$params2=array();
+
+								if (!empty($r_items_ids)){
+									foreach ($r_items_ids as $r_items_id) {
+                		    			$params2[]=$r_items_id->id;        // jointure itemid identique
+                    					$params2[]=$starttime;
+		                    			$params2[]=$endtime;
+										if (!empty($where2)){
+											$where2=$where2 . ' OR ((itemid=?) AND(timemodified >= ?) AND (timemodified < ?)) ';
+										}
+										else {
+		        	        				$where2=' ((itemid=?) AND (timemodified >= ?) AND (timemodified < ?)) ';
+										}
+									}
+                                	if (!empty($where2)){
+										$where2=' ('. $where2 . ')';
+										$sql2='SELECT id, itemid, userid, rawgrademax, rawgrademin, rawscaleid, usermodified, finalgrade, timemodified
+ FROM {grade_grades}
+ WHERE '.$where2.' ORDER BY itemid, timemodified DESC ';
+
+										if (CHECKSKILL_SUPER_DEBUG){
+	  										mtrace("\nDEBUG :: Line 758 :: PARAMETRES REQUETE\n");
+											print_r($params2);
+											mtrace("\nSQL : $sql2\n");
+          								}
+            							$r_grades_recents=$DB->get_records_sql($sql2, $params2);
+
+										if ($r_grades_recents){
+											// rechercher les activites correspondantes
+											// drapeau pour eviter de traiter plusieurs fois la meme ligne grade_grades
+											$t_grades_traites=array();
+
+											foreach ($r_grades_recents as $r_grades_recent) {
+	          									$params3=array("itemid" => "$r_grades_recent->itemid");
+    	      									$sql3 = "SELECT id, courseid, categoryid, itemname, itemtype, itemmodule, iteminstance, itemnumber, iteminfo, idnumber, calculation, gradetype, grademax, grademin, scaleid, outcomeid, timemodified
+ FROM {grade_items}  WHERE id= :itemid ORDER BY courseid, outcomeid ASC ";
+												if (CHECKSKILL_SUPER_DEBUG){
+  													mtrace("\nDEBUG :: Line 774\n");
+													print_r($params3);
+													mtrace("\nSQL : $sql3\n");
+        	  									}
+          										$r_item_isole=$DB->get_record_sql($sql3, $params3);
+
+												if ($r_item_isole){
+    	                                	        if (CHECKSKILL_SUPER_DEBUG){
+        	                                	        mtrace("\nDEBUG :: Line 783  ");
+														print_r($r_item_isole);
+                	    	    						mtrace("\n");
+													}
+
+													// rechercher toutes les lignes similaires en dehors de la fenetre temporelle
+    	      										$params4=array("courseid" => "$r_item_isole->courseid", "iteminstance" => "$r_item_isole->iteminstance", "scaleid" => $r_item_isole->scaleid, "outcomenull" => "" );
+	    	      									$sql4 = "SELECT id, courseid, categoryid, itemname, itemtype, itemmodule, iteminstance, itemnumber, iteminfo, idnumber, calculation, gradetype, grademax, grademin, scaleid, outcomeid, timemodified
+ FROM {grade_items}  WHERE courseid=:courseid AND iteminstance=:iteminstance AND scaleid=:scaleid AND outcomeid!=:outcomenull ORDER BY courseid, outcomeid ASC ";
+													if (CHECKSKILL_SUPER_DEBUG){
+  														mtrace("\nDEBUG :: Line 793\n");
+														print_r($params4);
+														mtrace("\nSQL : $sql4\n");
+	          										}
+
+    	      										$r_items=$DB->get_records_sql($sql4, $params4);
+
+													if (!empty($r_items)){
+    	                    	                    	if (CHECKSKILL_SUPER_DEBUG){
+        	                    	                        mtrace("\nDEBUG :: Line 572");
+															print_r($r_items);
+                	    	    							mtrace("\n");
+														}
+
+														$t_items=array();
+												 		$where5='';
+														$params5=array();
+														foreach ($r_items as $r_item) {
+															$t_items[$r_item->id]=$r_item;   // stocker l'objet dans un tableau indexe par l'id (jointure itemid de grade_grades à l'etape suivante)
+            	        									$params5[]=$r_item->id;
+                	    									$params5[]=$endtime;
+	                	                                    $params5[]=$r_grades_recent->userid;
+															if (!empty($where5)){
+																$where5=$where5 . ' OR ((itemid=?) AND (timemodified < ?) AND (userid=?)) ';
+															}
+															else {
+        	        											$where5=' ((itemid=?) AND (timemodified < ?) AND (userid=?)) ';
+															}
+                                                        }
+
+	    	    										if (!empty($where5)){
+															$where5=' ('. $where5 . ')';
+															$sql5='SELECT id, itemid, userid, rawgrademax, rawgrademin, rawscaleid, usermodified, finalgrade, timemodified
+ FROM {grade_grades}
+ WHERE  '.$where5.'  ORDER BY itemid, timemodified ';
+															if (CHECKSKILL_SUPER_DEBUG){
+  																mtrace("\nDEBUG :: \nLine 829\n");
+																print_r($params5);
+																mtrace("\nSQL : $sql5\n");
+          													}
+
+	                    	                                $r_grades=$DB->get_records_sql($sql5, $params5);
+
+															if ($r_grades){
+ 						        	        					foreach($r_grades as $r_grade){
+																	if (($r_grade) && (isset($t_outcomes[$t_items[$r_grade->itemid]->outcomeid]))){
+                	                    	                            if (!isset($t_grades_traites[$r_grade->id])){
+																			$t_grades_traites[$r_grade->id]=1;
+																		}
+                														else{
+                                	                    	                $t_grades_traites[$r_grade->id]=0;
+																		}
+
+																		if (!empty($t_grades_traites[$r_grade->id])){
+                                    										// DEBUG
+                                    										if   (CHECKSKILL_SUPER_DEBUG){
+																				mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php Line 619\n");
+    	                                    									mtrace ("CHECKSKILL INSTANCE : ".$item_outcome->instanceid."\nCOURSE ID: ".$item_outcome->courseid."\n");
+        	                                									mtrace ("DISPLAY : ".$item_outcome->displaytext."\n");
+										                                        mtrace ("ITEM CHECKSKILL : ".$item_outcome->itemid."\n");
+                	                     										mtrace ("CHECKSKILL : ".$item_outcome->code_referentiel."\n");
+										                                        mtrace ("COMPETENCE : ".$item_outcome->code_competence."\n");
+                        	            									    mtrace ("OUTCOME : ".$item_outcome->outcome."\n");
+										                                        mtrace ("OBJECTIF : Id:".$r_outcome->id." Nom:".$r_outcome->fullname."\n");
+                                	    									    mtrace ("GRADE ITEM: Num_Cours:".$r_item->courseid.", Nom_Item:".$r_item->itemname.", module:".$r_item->itemmodule.", instance:".$r_item->iteminstance.", Num_Objectif:".$r_item->outcomeid);
+                                    										}
+
+
+                                        	        						// stocker l'activite pour traitement
+						                    	                            $notation=new Object();
+                        							                        $notation->instanceid=$item_outcome->instanceid;
+                                                							$notation->courseid=$item_outcome->courseid;
+						                                	                $notation->itemid=$item_outcome->itemid;
+                        						            	            $notation->code_referentiel=$item_outcome->code_referentiel;
+																			// outcome
+					            	          								$notation->outcomeid= $t_items[$r_grade->itemid]->outcomeid;
+		        						              						$notation->outcomeshortname= $t_outcomes[$t_items[$r_grade->itemid]->outcomeid]->shortname;
+		                                                                    $notation->scaleid= $t_outcomes[$t_items[$r_grade->itemid]->outcomeid]->scaleid;
+																			// activity
+    		            								      				$notation->itemname= $t_items[$r_grade->itemid]->itemname;
+									                    	  				$notation->module=  $t_items[$r_grade->itemid]->itemmodule;
+        				    					          					$notation->moduleinstance= $t_items[$r_grade->itemid]->iteminstance;
+																			// grade
+																			$notation->userid=$r_grade->userid;
+									                      					$notation->teacherid=$r_grade->usermodified;
+
+		        									              			$notation->finalgrade=$r_grade->finalgrade;
+						    		    	        		      			$notation->timemodified=$r_grade->timemodified;
+																			// archiver
+																			$notations[]= $notation;
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+  			}
+    	}
+	}
+    return $notations;
+}
+*****************************************/
 
 
 /**
