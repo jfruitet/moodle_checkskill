@@ -33,12 +33,7 @@ define("CHECKL_TEACHERMARK_NO", 2);
 define("CHECKL_TEACHERMARK_YES", 1);
 define("CHECKL_TEACHERMARK_UNDECIDED", 0);
 
-// define ('CHECKSKILL_DEBUG', 0);    // INACTIVE DEBUG : if set to 1 cron trace many many things :))
-define("CHECKSKILL_DEBUG", 1); // impact cron to checks outcomes from CHECKSKILL_OUTCOMES_DELAY to CHECKSKILL_OUTCOMES_DELAY weeks
-define("CHECKSKILL_SUPER_DEBUG", 1);     // very verbose
-//define("CHECKSKILL_SUPER_DEBUG", 0);
-define("CHECKSKILL_OUTCOMES_DELAY", 2); // how may days the cron examines the outcomes data
-// Increase this value to take into account more former outcomes evaluations
+define("CHECKL_DEBUG", 0);
 
 /**
  * return cron timestamp
@@ -71,7 +66,7 @@ global $OUTPUT; // for icons
 	// This is to avoid the problem where cron has not been running for a long time
     // Enregistrements anterieurs a CHECKSKILL_OUTCOMES_DELAY (2) jours non traites.
 	if (CHECKSKILL_DEBUG){
-    	$starttime = $endtime - CHECKSKILL_OUTCOMES_DELAY * 7 * 24 * 3600;   // n weeks earlier
+    	$starttime = $endtime - CHECKSKILL_OUTCOMES_DELAY * 7 * 24 * 3600;   // Two weeks earlier
 	}
 	else{
     	$starttime = $endtime - CHECKSKILL_OUTCOMES_DELAY * 24 *  3600;  // n days earlier
@@ -97,7 +92,7 @@ global $OUTPUT; // for icons
     }	
 
     $notations=checkskill_get_outcomes($starttime, $endtime);
-    if (CHECKSKILL_SUPER_DEBUG){
+    if (CHECKL_DEBUG){
         mtrace("\nDEBUG :: cron_outcomes.php Line 80 :: \nNOTATIONS\n");
         print_r($notations);
     }
@@ -106,7 +101,7 @@ global $OUTPUT; // for icons
     if ($notations){
         foreach($notations as $notation){
             if ($notation){
-                if (CHECKSKILL_SUPER_DEBUG){
+                if (CHECKL_DEBUG){
                     mtrace("\nDEBUG :: cron_outcomes.php Line 89 :: USERID ".$notation->userid." ; COURSEID ".$notation->courseid."\nNOTATION :\n");
                     print_r($notation);
                 }
@@ -116,7 +111,7 @@ global $OUTPUT; // for icons
 
                 if ($m = checkskill_get_module_info($notation->module, $notation->moduleinstance, $notation->courseid)){
                             // DEBUG
-                            if (CHECKSKILL_SUPER_DEBUG){
+                            if (CHECKL_DEBUG){
                                 mtrace("\nDEBUG :: cron_outcomes.php Line 194 :: MODULES \n");
                                 print_r($m);
                             }
@@ -141,11 +136,9 @@ global $OUTPUT; // for icons
                             $checkskill_object->checkskill_comment_userid=$notation->userid;
                             $checkskill_object->checkskill_comment_commentby=$notation->teacherid;
                             // add follow_link icon
-//                            $checkskill_object->checkskill_comment_text='[<a href="'.$m->link.'">'.get_string('modulename', $m->type).' N '.$m->id
-//                            .' <img src="'.$OUTPUT->pix_url('follow_link','checkskill').'" alt="'.get_string('linktomodule','checkskill').'" />
-// </a> '.$m->userdate.'] '.$m->name;
-                            $checkskill_object->checkskill_comment_text='[<a href="'.$m->link.'"><img src="'.$OUTPUT->pix_url('follow_link','checkskill').'" alt="'.get_string('linktomodule','checkskill').'" />
- </a> <span class="small">'.$m->userdate.'</span>] ';
+                            $checkskill_object->checkskill_comment_text='[<a href="'.$m->link.'">'.get_string('modulename', $m->type).' N '.$m->id
+                            .' <img src="'.$OUTPUT->pix_url('follow_link','checkskill').'" alt="'.get_string('linktomodule','checkskill').'" />
+ </a> '.$m->userdate.'] '.$m->name;
 
 
                             $scale  = checkskill_get_scale($notation->scaleid);
@@ -163,7 +156,7 @@ global $OUTPUT; // for icons
                                     // echo " ---&gt; VALIDE \n";
                                     $checkskill_object->valide=1;
                                     if (checkskill_set_outcomes($checkskill_object)){
-                                        if (CHECKSKILL_SUPER_DEBUG){
+                                        if (CHECKL_DEBUG){
                                             mtrace("\nDEBUG :: cron_outcomes.php Line 280\n-----------------\nENREGISTREE\n");
                                         }
                                         $n_maj++;
@@ -179,7 +172,7 @@ global $OUTPUT; // for icons
 
                             // enregistrer l'activite
                             // DEBUG
-                            if (CHECKSKILL_SUPER_DEBUG){
+                            if (CHECKL_DEBUG){
                                 mtrace("\nDEBUG :: cron_outcomes.php Line 274 ; CHECKLIST OBJECTS\n");
                                 print_r($checkskill_object);
                             }
@@ -714,7 +707,7 @@ global $t_items_records;
   ORDER BY {checkskill}.course ASC, {checkskill}.id ASC, {checkskill_item}.displaytext ASC ";
 
     // DEBUG
-    if  (CHECKSKILL_SUPER_DEBUG){
+    if  (CHECKL_DEBUG){
         mtrace("\nDEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 372 :: SQL:$sql\n");
         print_r($params);
     }
@@ -724,7 +717,7 @@ global $t_items_records;
     if ($r_checkskills){
         /*
         // DEBUG
-        if   (CHECKSKILL_SUPER_DEBUG){
+        if   (CHECKL_DEBUG){
                 mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 363 :: COMPOSITE DATA\n");
                 print_r($r_checkskills);
         }
@@ -741,7 +734,7 @@ global $t_items_records;
 
 
             // DEBUG
-            if   (CHECKSKILL_SUPER_DEBUG){
+            if   (CHECKL_DEBUG){
                 mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 380 :: COMPOSITE DATA\n");
                 print_r($r_checkskill);
             }
@@ -752,7 +745,7 @@ global $t_items_records;
             if (preg_match('/(.*)::(.*)/i', $r_checkskill->displaytext, $matches)){
                 // DEBUG
 
-                if   (CHECKSKILL_SUPER_DEBUG){
+                if   (CHECKL_DEBUG){
                     mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 391 :: MATCHES\n");
                     print_r($matches);
                 }
@@ -762,7 +755,7 @@ global $t_items_records;
                     $item_outcome->outcome=trim($matches[1]);
                     if ($keywords = preg_split("/[\s]+/",$matches[1],-1,PREG_SPLIT_NO_EMPTY)){
 
-                        if   (CHECKSKILL_SUPER_DEBUG){
+                        if   (CHECKL_DEBUG){
                             mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 401 :: REFERENTIELS\n");
                             print_r($keywords);
                         }
@@ -778,7 +771,7 @@ global $t_items_records;
                 }
 
                 // DEBUG
-                if   (CHECKSKILL_SUPER_DEBUG){
+                if   (CHECKL_DEBUG){
                     mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 417 :: ITEM_OUTCOME\n");
                     print_r($item_outcome);
                 }
@@ -795,7 +788,7 @@ global $t_items_records;
       ORDER BY fullname ASC ";
                     // DEBUG
 
-                    if   (CHECKSKILL_SUPER_DEBUG){
+                    if   (CHECKL_DEBUG){
                         mtrace("\nDEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 458 :: SQL:$sql\n");
                         print_r($params);
                     }
@@ -807,7 +800,7 @@ global $t_items_records;
                             // selectionner les items (activites utilisant ces outcomes)
                             // DEBUG
                             /*
-                            if   (CHECKSKILL_SUPER_DEBUG){
+                            if   (CHECKL_DEBUG){
                                 mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php Line 610 :: R_OUTCOMES\n");
                                 print_r($r_outcome);
                                 echo "\n\n";
@@ -824,14 +817,14 @@ global $t_items_records;
                                 foreach($r_items as $r_item){
                                     // selectionner les items (activites) utilisant ces outcomes
                                     // DEBUG
-                                    if   (CHECKSKILL_SUPER_DEBUG){
+                                    if   (CHECKL_DEBUG){
                                         mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php\nLine 675 :: ITEMS\n");
                                         print_r($r_item);
                                     }
 
                                     // selectionner les grades (notes attribu‚es aux utilisateur de ces activit‚s)
                                     // DEBUG
-                                    if   (CHECKSKILL_SUPER_DEBUG){
+                                    if   (CHECKL_DEBUG){
                                         mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php Line 738\n");
                                         mtrace ("CHECKLIST INSTANCE : ".$item_outcome->instanceid."\nCOURSE ID: ".$item_outcome->courseid."\n");
                                         mtrace ("DISPLAY : ".$item_outcome->displaytext."\n");
@@ -849,7 +842,7 @@ global $t_items_records;
  AND (timemodified < :endtime)) ORDER BY itemid ASC, userid ASC ";
 
                                     // DEBUG
-                                    if   (CHECKSKILL_SUPER_DEBUG){
+                                    if   (CHECKL_DEBUG){
                                         mtrace("DEBUG :: ./mod/checkskill/cron_outcomes.php Line 739 ::\nSQL = $sql\n");
                                         print_r($params);
                                     }
@@ -905,7 +898,7 @@ global $CFG;
 global $DB;
 
     $ok=false;
-	if (CHECKSKILL_SUPER_DEBUG){
+	if (CHECKL_DEBUG){
         // DEBUG
         mtrace("\nDEBUG :: checkskill_activite_outcomes :: 705\nDEMANDE DE MISE A JOUR\n");
         print_r($checkskill_object);
@@ -916,7 +909,7 @@ global $DB;
         "course"=>$checkskill_object->checkskill_course);
 
 	$sql = "SELECT * FROM {checkskill} WHERE id=:id AND course=:course";
-    if (CHECKSKILL_SUPER_DEBUG){
+    if (CHECKL_DEBUG){
         mtrace("\n715 :: SQL:\n$sql\n");
         print_r($params);
 	}
@@ -924,7 +917,7 @@ global $DB;
 	$r_checkskill=$DB->get_record_sql($sql, $params);
 
     if ($r_checkskill) {
-        if (CHECKSKILL_SUPER_DEBUG){
+        if (CHECKL_DEBUG){
 		  // DEBUG
 		  mtrace("\nDEBUG :: checkskill_activite_outcomes :: 697\n");
 		  print_r($r_checkskill);
@@ -935,7 +928,7 @@ global $DB;
             "id"=>$checkskill_object->checkskill_item_id);
 
     	$sql = "SELECT * FROM {checkskill_item} WHERE id=:id AND checkskill=:checkskill";
-        if (CHECKSKILL_SUPER_DEBUG){
+        if (CHECKL_DEBUG){
             mtrace("\n710 :: SQL:\n$sql\n");
             print_r($params);
         }
@@ -954,13 +947,13 @@ global $DB;
                 "userid"=>$checkskill_object->checkskill_check_userid);
 
             $sql = "SELECT * FROM {checkskill_check} WHERE item=:item AND userid=:userid";
-            if (CHECKSKILL_SUPER_DEBUG){
+            if (CHECKL_DEBUG){
                 mtrace("\n728 :: SQL:\n$sql\n");
                 print_r($params);
             }
             $checkskill_object_old=$DB->get_record_sql($sql, $params);
             if ($checkskill_object_old) {
-                if (CHECKSKILL_SUPER_DEBUG){
+                if (CHECKL_DEBUG){
                     // DEBUG
                     mtrace("\n735 :: OLD\n");
                     print_r($checkskill_object_old);
@@ -982,14 +975,14 @@ global $DB;
                 if (empty($checkskill_object_old->teachertimestamp)
                         || ($checkskill_object_old->teachertimestamp<$checkskill_check->teachertimestamp)){
                     $checkskill_check->teachertimestamp=time();
-                    if (CHECKSKILL_SUPER_DEBUG){
+                    if (CHECKL_DEBUG){
                         // DEBUG
                         mtrace("\n757 :: MISE A JOUR CHECKLIST_CHECK\n");
                         print_r($checkskill_check);
                     }
                     $ok=$DB->update_record("checkskill_check", $checkskill_check);
 
-                    if (CHECKSKILL_SUPER_DEBUG){
+                    if (CHECKL_DEBUG){
                         // DEBUG
                         if ($ok) mtrace("\n764 :: UPDATE CHECK\n");
                         else  mtrace("\n65 :: ERREUR UPDATE CHECK\n");
@@ -1005,7 +998,7 @@ global $DB;
                 }
                 $checkskill_check->teachermark=CHECKL_TEACHERMARK_YES;
 
-                if (CHECKSKILL_SUPER_DEBUG){
+                if (CHECKL_DEBUG){
                     // DEBUG
                     mtrace("\n780 :: NEW CREATED\n");
                     print_r($checkskill_check);
@@ -1014,7 +1007,7 @@ global $DB;
                 if ($checkskill_check_id) {
                     $ok=true;
                 }
-                if (CHECKSKILL_SUPER_DEBUG){
+                if (CHECKL_DEBUG){
                     // DEBUG
                     if ($ok) mtrace("\n789 :: INSERT CHECK\n");
                     else  mtrace("\n790 :: ERREUR INSERT CHECK\n");
@@ -1036,15 +1029,15 @@ global $DB;
                     "userid"=>$checkskill_object->checkskill_comment_userid);
 
                 $sql = "SELECT * FROM {checkskill_comment} WHERE itemid=:item AND userid=:userid";
-                if (CHECKSKILL_SUPER_DEBUG){
+                if (CHECKL_DEBUG){
                     mtrace("\n810 :: SQL:\n$sql\n");
                     print_r($params);
                 }
                 $checkskill_comment_old=$DB->get_record_sql($sql, $params);
                 if ($checkskill_comment_old) {
-                    if (CHECKSKILL_SUPER_DEBUG){
+                    if (CHECKL_DEBUG){
                         // DEBUG
-                        mtrace("\n1047 :: OLD COMMENT\n");
+                        mtrace("\n817 :: OLD COMMENT\n");
                         print_r($checkskill_comment_old);
                     }
 
@@ -1054,9 +1047,9 @@ global $DB;
                         $checkskill_comment->text='['.get_string('old_comment', 'checkskill').' '.userdate($checkskill_comment_old->commentby).' '.$checkskill_comment_old->text.']<br />'.$checkskill_comment->text;
                     }
                     */
-                    if (CHECKSKILL_SUPER_DEBUG){
+                    if (CHECKL_DEBUG){
                         // DEBUG
-                        mtrace("\n1059 :: MISE A JOUR CHECKLIST_COMMENT\n");
+                        mtrace("\n829 :: MISE A JOUR CHECKLIST_COMMENT\n");
                         print_r($checkskill_comment);
                     }
                     $ok=$ok && $DB->update_record("checkskill_comment", $checkskill_comment);

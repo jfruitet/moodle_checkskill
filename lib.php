@@ -50,11 +50,6 @@ define("CHECKSKILL_AUTOPOPULATE_SECTION", 2);
 define("CHECKSKILL_AUTOPOPULATE_COURSE", 1);
 define("CHECKSKILL_MAX_INDENT", 10);
 
-// define ('CHECKSKILL_DEBUG', 0);    // INACTIVE DEBUG : if set to 1 cron trace many many things :))
-define("CHECKSKILL_DEBUG", 1); // impact cron to checks outcomes from CHECKSKILL_OUTCOMES_DELAY to CHECKSKILL_OUTCOMES_DELAY weeks
-define("CHECKSKILL_OUTCOMES_DELAY", 2); // how may days the cron examines the outcomes data
-// Increase this value to take into account more former outcomes evaluations
-
 global $CFG;
 require_once(dirname(__FILE__).'/locallib.php');
 require_once($CFG->libdir.'/completionlib.php');

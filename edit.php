@@ -19,10 +19,10 @@ require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
 require_once(dirname(__FILE__).'/lib.php');
 require_once(dirname(__FILE__).'/locallib.php');
 
-global $DB;
+global $DB, $PAGE;
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
-$checkskillid  = optional_param('checkskill', 0, PARAM_INT);  // checkskill instance ID
+// $checkskillid  = optional_param('checkskill', 0, PARAM_INT);  // checkskill instance ID
 
 $url = new moodle_url('/mod/checkskill/view.php');
 if ($id) {

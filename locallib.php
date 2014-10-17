@@ -505,6 +505,7 @@ class checkskill_class {
         return $DB->get_fieldset_sql($sql, $params);
     }
 
+
     function view() {
         global $CFG, $OUTPUT;
 
@@ -552,7 +553,7 @@ class checkskill_class {
             $this->process_view_actions();
         }
 
-		// Modif JF where checkskill differs from checkskill ***********************************************************		
+		// Modif JF where checkskill differs from checklist ***********************************************************
 		// Mahara && Portofolio stuff
         if (!empty($CFG->enableportfolios) && !empty($this->userid)){
             require_once($CFG->libdir.'/portfoliolib.php');
@@ -569,7 +570,8 @@ class checkskill_class {
             echo "<div align=\"center\">".$button->to_html(PORTFOLIO_ADD_ICON_LINK)."</div>\n";
         }
 	// ***************************************************************************************************************
-        $this->view_items();
+
+		$this->view_items();
 
         $this->view_footer();
     }
@@ -832,11 +834,11 @@ class checkskill_class {
 
     function view_items($viewother = false, $userreport = false) {
         global $DB, $OUTPUT, $PAGE, $CFG;
-		global $USER; // Modif JF
+        global $USER;     // Modif JF
         echo $OUTPUT->box_start('generalbox boxwidthwide boxaligncenter checkskillbox');
 
-		echo html_writer::tag('div', '&nbsp;', array('id' => 'checkskillspinner'));
-		
+        echo html_writer::tag('div', '&nbsp;', array('id' => 'checkskillspinner'));
+
         $comments = $this->checkskill->teachercomments;
         $editcomments = false;
         $thispage = new moodle_url('/mod/checkskill/view.php', array('id' => $this->cm->id) );
@@ -845,7 +847,7 @@ class checkskill_class {
         $showcompletiondates = false;
         $strteachername = '';
         $struserdate = '';
-        $strteacherdate = '';		
+        $strteacherdate = '';
         if ($viewother) {
             if ($comments) {
                 $editcomments = optional_param('editcomments', false, PARAM_BOOL);
@@ -853,7 +855,7 @@ class checkskill_class {
             $thispage = new moodle_url('/mod/checkskill/report.php', array('id' => $this->cm->id, 'studentid' => $this->userid) );
 
             if (!$student = $DB->get_record('user', array('id' => $this->userid) )) {
-                print_error('error_user', 'checkskill');
+                error('No such user!');
             }
 
             echo '<h2>'.get_string('checkskillfor','checkskill').' '.fullname($student, true).'</h2>';
@@ -906,7 +908,7 @@ class checkskill_class {
                         $item->teachername = false;
                     }
                 }
-            }			
+            }
         }
 
 
@@ -978,7 +980,7 @@ class checkskill_class {
                 reset($this->useritems);
             }
 
-			$commentusers = array();
+            $commentusers = array();
             if ($comments) {
                 list($isql, $iparams) = $DB->get_in_or_equal(array_keys($this->items));
                 $params = array_merge(array($this->userid), $iparams);
@@ -1004,9 +1006,9 @@ class checkskill_class {
             if ($teachermarklocked) {
                 echo '<p style="checkskillwarning">'.get_string('lockteachermarkswarning', 'checkskill').'</p>';
             }
-            $ol_count=0; // to close all ol tags : MODIF JF
+
             echo '<ol class="checkskill" id="checkskillouter">';
-            $ol_count++; // MODIF JF
+
             $currindent = 0;
             foreach ($this->items as $item) {
 
@@ -1014,7 +1016,7 @@ class checkskill_class {
                     continue;
                 }
 
-                if ($checkgroupings && $item->grouping) {
+                if ($checkgroupings && !empty($item->grouping)) {
                     if (!in_array($item->grouping, $this->groupings)) {
                         continue; // Current user is not a member of this item's grouping, so skip
                     }
@@ -1023,15 +1025,15 @@ class checkskill_class {
                 while ($item->indent > $currindent) {
                     $currindent++;
                     echo '<ol class="checkskill">';
-                    $ol_count++;
                 }
-				
+
+
                 while ($item->indent < $currindent) {
                     $currindent--;
                     echo '</ol>';
-                    $ol_count--;
                 }
-				
+
+
                 $itemname = '"item'.$item->id.'"';
                 $checked = (($updateform || $viewother || $userreport) && $item->checked) ? ' checked="checked" ' : '';
                 if ($viewother || $userreport) {
@@ -1056,10 +1058,9 @@ class checkskill_class {
                     $itemcolour = 'itemblack';
                 }
 
-				$checkclass = '';
+                $checkclass = '';
                 if ($item->itemoptional == CHECKSKILL_OPTIONAL_HEADING) {
                     $optional = ' class="itemheading '.$itemcolour.'" ';
-//                    $spacerimg = $OUTPUT->pix_url('check_spacer','checkskill');
                 } else if ($item->itemoptional == CHECKSKILL_OPTIONAL_YES) {
                     $optional = ' class="itemoptional '.$itemcolour.'" ';
                     $checkclass = ' itemoptional';
@@ -1067,10 +1068,11 @@ class checkskill_class {
                     $optional = ' class="'.$itemcolour.'" ';
                 }
 
+
                 echo '<li>';
                 if ($showteachermark) {
-                    if ($item->itemoptional == CHECKSKILL_OPTIONAL_HEADING) {
-                        //echo '<img src="'.$spacerimg.'" alt="" title="" />';
+                    if ($item->itemoptional != CHECKSKILL_OPTIONAL_HEADING) {
+
                         if ($viewother) {
                             $disabled = ($teachermarklocked && $item->teachermark == CHECKSKILL_TEACHERMARK_YES) ? 'disabled="disabled" ' : '';
 
@@ -1090,7 +1092,7 @@ class checkskill_class {
                     }
                 }
                 if ($showcheckbox) {
-                    if ($item->itemoptional == CHECKSKILL_OPTIONAL_HEADING) {
+                    if ($item->itemoptional != CHECKSKILL_OPTIONAL_HEADING) {
                         echo '<input class="checkskillitem'.$checkclass.'" type="checkbox" name="items[]" id='.$itemname.$checked.' value="'.$item->id.'" />';
                     }
                 }
@@ -1113,7 +1115,7 @@ class checkskill_class {
                     }
                 }
 
-                 if ($showcompletiondates) {
+                if ($showcompletiondates) {
                     if ($item->itemoptional != CHECKSKILL_OPTIONAL_HEADING) {
                         if ($showteachermark && $item->teachermark != CHECKSKILL_TEACHERMARK_UNDECIDED && $item->teachertimestamp) {
                             if ($item->teachername) {
@@ -1145,7 +1147,7 @@ class checkskill_class {
                             }
                             echo '<input type="text" name="teachercomment['.$item->id.']" value="'.s($comment->text).'" '.$outid.'/>';
                         } else {
-                            echo $comment->text; // echo s($comment->text);
+                            echo $comment->text; //MODIF JF
                         }
                         echo '&nbsp;</span>';
                     }
@@ -1153,7 +1155,7 @@ class checkskill_class {
                 if (!$foundcomment && $editcomments) {
                     echo '&nbsp;<input type="text" name="teachercomment['.$item->id.']" />';
                 }
-// MODIF JF ***************************************************				
+// MODIF JF ***************************************************
                 // Display descriptions
                 $editdescription=$CFG->checkskill_description_display;
                 if ($editdescription) {
@@ -1162,7 +1164,7 @@ class checkskill_class {
 // ************************************************************
                 echo '</li>';
 
-				
+
                 // Output any user-added items
                 if ($this->useritems) {
                     $useritem = current($this->useritems);
@@ -1270,15 +1272,15 @@ class checkskill_class {
                     }
                 }
             }
-            while ($ol_count>0){
-                echo '</ol>';
-                $ol_count--;
-            }
-			
+            echo '</ol>';
+
+
+
+
             if ($updateform) {
                 echo '<input id="checkskillsavechecks" type="submit" name="submit" value="'.get_string('savechecks','checkskill').'" />';
                 if ($viewother) {
-                    echo '&nbsp;<input type="submit" name="save" value="'.get_string('savechecks', 'mod_checkskill').'" />';				
+                    echo '&nbsp;<input type="submit" name="save" value="'.get_string('savechecks', 'mod_checkskill').'" />';
                     echo '&nbsp;<input type="submit" name="savenext" value="'.get_string('saveandnext').'" />';
                     echo '&nbsp;<input type="submit" name="viewnext" value="'.get_string('next').'" />';
                 }
@@ -1307,6 +1309,8 @@ class checkskill_class {
 
         echo $OUTPUT->box_end();
     }
+
+
 
     function print_edit_date($ts=0) {
         // TODO - use fancy JS calendar instead
@@ -2190,7 +2194,7 @@ class checkskill_class {
         $removeauto = optional_param('removeauto', false, PARAM_TEXT);
 
         if ($removeauto) {
-            // Remove any automatically generated items from the skill
+            // Remove any automatically generated items from the list
             // (if no longer using automatic items)
             if (!confirm_sesskey()) {
                 print_error('error_sesskey', 'checkskill');
