@@ -633,13 +633,13 @@ function checkskill_cron () {
     $outcomesupdate = 0;
 	// mtrace(" OUTOMES: ".$CFG->enableoutcomes);
 
-    if (!empty($CFG->enableoutcomes)){
+    if (!empty($CFG->enableoutcomes) && !empty($CFG->checkskill_outcomes_input)){
         require_once($CFG->dirroot.'/mod/checkskill/cron_outcomes.php');
-        $outcomesupdate+=checkskill_cron_outcomes($lastlogtime);
-    }
-    if ($outcomesupdate) {
-        mtrace(" Updated $outcomesupdate checkmark(s) from outcomes changes");
-    }
+        $outcomesupdate+=checkskill_cron_outcomes();
+        if ($outcomesupdate) {
+    	    mtrace(" Updated $outcomesupdate checkmark(s) from outcomes changes");
+    	}
+	}
 	// *************************************************************************************************************
 	
     // Find all autoupdating checkskills

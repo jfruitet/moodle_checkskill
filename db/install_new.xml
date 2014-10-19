@@ -109,7 +109,7 @@
         </INDEXES>
     </TABLE>
 
-    <TABLE NAME="checkskill_document" COMMENT="Document linked to a description" PREVIOUS="checkskill_description" >
+    <TABLE NAME="checkskill_document" COMMENT="Document linked to a description" PREVIOUS="checkskill_description"  NEXT="checkskill_item_modules" >
       <FIELDS>
 			<FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" COMMENT="id of the table" NEXT="descriptionid"/>
 			<FIELD NAME="descriptionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="description_document"/>
@@ -125,6 +125,24 @@
       <INDEXES>
         <INDEX NAME="indexdescription" UNIQUE="false" FIELDS="descriptionid"/>
       </INDEXES>
+    </TABLE>
+
+   <TABLE NAME="checkskill_item_modules" COMMENT="Item impactes par des activites Moodle (modules)" PREVIOUS="checkskill_description" >
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" COMMENT="id of the table" NEXT="type"/>
+        <FIELD NAME="type" TYPE="char" LENGTH="80" NOTNULL="true" SEQUENCE="false" COMMENT="modulename" PREVIOUS="id" NEXT="moduleid"/>
+        <FIELD NAME="moduleid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="type" NEXT="ref_item"/>
+        <FIELD NAME="ref_item" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="moduleid" NEXT="ref_checkskill"/>
+        <FIELD NAME="ref_checkskill" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="ref_item" NEXT="ref_course"/>
+        <FIELD NAME="ref_course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="ref_item" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="ref_course" NEXT="ref_activity"/>
+        <FIELD NAME="ref_activity" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="userid" NEXT="ref_comment"/>
+        <FIELD NAME="ref_comment" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="ref_activity"/>
+		<FIELD NAME="text" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" COMMENT="The text of the comment, as added by the teacher" PREVIOUS="commentby"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for activite"/>
+      </KEYS>
     </TABLE>
 
   </TABLES>
