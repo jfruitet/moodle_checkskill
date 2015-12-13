@@ -24,7 +24,7 @@ I have made some additions to the original code to get some new functionnalities
 * Notification, update database.
 * Go to any course
 * Add a new activity "CheckSkill"
-* Import any Outcommes file of any kind as Item list.
+* Import any Outcomes file of any kind as Item list.
 * Let Students check their skills, upload documents, etc.
 * Let Teachers add comments / evaluate.
 
